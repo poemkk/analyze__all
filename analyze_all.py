@@ -63,7 +63,7 @@ def parse_pdf(file_path):
         return text
     # 如果在解析过程中出现异常，记录错误日志并返回空字符串
     except Exception as e:
-        logging.error(f"Ошибка анализа файла .pdf: {e}")
+        logging.error(f"file not found")
         return ""
 
 
@@ -80,7 +80,7 @@ def parse_docx(file_path):
         return "\n".join(full_text)
     # 如果在解析过程中出现异常，记录错误日志并返回空字符串
     except Exception as e:
-        logging.error(f"Ошибка анализа файла .docx: {e}")
+        logging.error(f"file not found")
         return ""
 
 
@@ -97,11 +97,11 @@ def parse_html(file_path):
             return text_content
     # 如果文件未找到，记录错误日志并返回空字符串
     except FileNotFoundError:
-        logging.error(f"файл не найден: {file_path}")
+        logging.error(f"file not found: {file_path}")
         return ""
     # 如果在解析过程中出现其他异常，记录错误日志并返回空字符串
     except Exception as e:
-        logging.error(f"Ошибка анализа HTML-файла: {e}")
+        logging.error(f"file not found")
         return ""
 
 
@@ -118,11 +118,11 @@ def parse_djvu(file_path):
         return text
     # 如果未安装pydjvu库，捕获ImportError异常，记录错误日志并返回空字符串
     except ImportError:
-        logging.error("Библиотека pydjvu не установлена, и файлы .djvu не могут быть проанализированы.")
+        logging.error("The pydjvu library is not installed and .djvu files cannot be parsed.")
         return ""
     # 如果在解析过程中出现其他异常，记录错误日志并返回空字符串
     except Exception as e:
-        logging.error(f"Ошибка анализа файла .djvu: {e}")
+        logging.error(f"File parsing error .djvu: {e}")
         return ""
 
 
@@ -151,7 +151,7 @@ def ner_analysis(text):
         return brand_names, keywords
     # 如果在NER分析过程中出现异常，记录错误日志并返回空的品牌名称和关键词列表
     except Exception as e:
-        logging.error(f"Ошибка при анализе NER: {e}")
+        logging.error(f"Error in NER analysis: {e}")
         return [], []
 
 
@@ -194,7 +194,7 @@ def extract_keywords(text):
         return keywords
     # 如果在关键词提取过程中出现异常，记录错误日志
     except Exception as e:
-        logging.error(f"Ошибка при извлечении ключевых слов: {e}")
+        logging.error(f"Error while extracting keywords: {e}")
         return []
 
 
@@ -217,7 +217,7 @@ def syntax_analysis(text):
             print(f"слово: {token.text}, Часть речи: {token.pos_}, Зависимости: {token.dep_}, Заглавное слово: {token.head.text}")
     # 如果在句法分析过程中出现异常，记录错误日志
     except Exception as e:
-        logging.error(f"Ошибка в синтаксическом анализе: {e}")
+        logging.error(f"Parsing error: {e}")
 
 
 # 词法化函数
@@ -241,7 +241,7 @@ def main():
     file_path = input("Введите путь к файлу: ")
     # 如果文件路径为空或文件不存在，记录错误日志并返回
     if not file_path or not os.path.exists(file_path):
-        logging.error("Введенный путь к файлу недействителен.")
+        logging.error("The file path entered is invalid..")
         return
 
     file_extension = file_path.split('.')[-1].lower()
@@ -255,7 +255,7 @@ def main():
     elif file_extension == "djvu":
         text = parse_djvu(file_path)
     else:
-        logging.error("Неподдерживаемый тип файла.")
+        logging.error("Unsupported file type.")
         return
 
     # 预处理文本，去除多余空格和空字符
@@ -278,6 +278,6 @@ if __name__ == "__main__":
         main()
     # 如果在主函数执行过程中出现异常，记录错误日志并打印异常堆栈信息
     except Exception as e:
-        logging.error(f"Произошла ошибка: {e}")
+        logging.error(f"An error occurred: {e}")
         traceback.print_exc()
 
